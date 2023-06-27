@@ -1,0 +1,30 @@
+version: '3.7'
+services:
+  api:
+    container_name: 'api'
+    build:
+      dockerfile: Dockerfile.dev
+      context: .
+      target: base
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+    expose:
+      - ${PORT}
+    ports:
+      - ${PORT}:4000
+    volumes:
+      - ./src:/app/src
+      - ./nodemon.json:/app/nodemon.json
+    command: npm run dev
+  postgres:
+    container_name: db
+    image: 'postgres:13'
+    restart: always
+    ports:
+      - ${POSTGRES_PORT}:5432
+    env_file:
+      - .env
+    volumes:
+      - ./data:/var/lib/postgresql/data
