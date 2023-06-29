@@ -3,24 +3,26 @@ import supertest from 'supertest';
 import { DataSource, DataSourceOptions } from 'typeorm';
 
 import { Server, createServer } from 'node:http';
+import { createDatabase } from 'typeorm-extension';
 
 import { UserEntity } from '../entities/UserEntity';
 import routes from '../routes';
 
 export const dataSourceOptions: DataSourceOptions = {
   type: 'postgres',
-  host: 'localhost',
+  host: '127.0.0.1',
   port: 5432,
   username: 'root',
   database: 'test',
   password: 'easypass',
   synchronize: true,
+  dropSchema: true,
   entities: [UserEntity]
 };
 
 export class TestFactory {
   private _app: express.Application;
-  private _connection: DataSource;
+  public _connection: DataSource;
   private _server: Server;
 
   public get app(): supertest.SuperTest<supertest.Test> {
@@ -39,6 +41,12 @@ export class TestFactory {
   private async startup(): Promise<void> {
     try {
       this._connection = new DataSource(dataSourceOptions);
+      await createDatabase({
+        options: {
+          type: 'postgres' as const,
+          ...dataSourceOptions
+        }
+      });
       await this._connection.initialize();
       this._app = express();
       this._app.use(express.json());

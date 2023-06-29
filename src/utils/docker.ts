@@ -65,6 +65,7 @@ export const setupPostgresContainer = async (user: string, password: string, por
         ]
       }
     },
+    ExposedPorts: { '5432/tcp': {} },
     Image: CONTAINER_IMAGE,
     name: CONTAINER_NAME
   });
@@ -73,5 +74,3 @@ export const setupPostgresContainer = async (user: string, password: string, por
   await ensurePgServiceReadiness(container, user);
   return container;
 };
-
-export { default as Docker } from 'dockerode';

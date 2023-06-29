@@ -1,7 +1,0 @@
-{
-  "extension": ["ts"],
-  "spec": "src/test/**/*.test.ts",
-  "recursive": true,
-  "timeout": 10000,
-  "loader": "ts-node/esm"
-}

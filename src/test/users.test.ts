@@ -12,7 +12,7 @@ describe('Testing the users route', () => {
   });
 
   it('should be able to fetch all users', async () => {
-    const response = await factory.app.get('/');
+    const response = await factory.app.get('/users');
     expect(response.status).toBe(200);
   });
 });
