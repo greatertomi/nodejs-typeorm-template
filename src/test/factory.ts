@@ -7,21 +7,21 @@ import { Server, createServer } from 'node:http';
 import { UserEntity } from '../entities/UserEntity';
 import routes from '../routes';
 
+export const dataSourceOptions: DataSourceOptions = {
+  type: 'postgres',
+  host: 'localhost',
+  port: 5432,
+  username: 'root',
+  database: 'test',
+  password: 'easypass',
+  synchronize: true,
+  entities: [UserEntity]
+};
+
 export class TestFactory {
   private _app: express.Application;
   private _connection: DataSource;
   private _server: Server;
-
-  private options: DataSourceOptions = {
-    type: 'postgres',
-    host: 'localhost',
-    port: 2345,
-    username: 'root',
-    database: 'test',
-    password: 'programmer',
-    synchronize: true,
-    entities: [UserEntity]
-  };
 
   public get app(): supertest.SuperTest<supertest.Test> {
     return supertest(this._app);
@@ -38,7 +38,7 @@ export class TestFactory {
 
   private async startup(): Promise<void> {
     try {
-      this._connection = new DataSource(this.options);
+      this._connection = new DataSource(dataSourceOptions);
       await this._connection.initialize();
       this._app = express();
       this._app.use(express.json());

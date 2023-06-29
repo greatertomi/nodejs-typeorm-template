@@ -3,7 +3,7 @@
     "browser": true,
     "es2021": true,
     "jest/globals": true,
-    "mocha": true
+    "jest": true
   },
   "extends": [
     "eslint:recommended",

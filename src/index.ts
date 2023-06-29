@@ -9,7 +9,7 @@ import routes from './routes';
 
 const { PORT } = envConfig;
 
-const main = async () => {
+export const main = async () => {
   try {
     await dataSource.initialize();
     const app = express();
