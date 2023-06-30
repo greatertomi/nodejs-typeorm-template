@@ -1,0 +1,44 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+# See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+name: API CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x]
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - name: Install Packages
+      run: npm ci
+    - name: Check for linting errors
+      run: npm run lint
+    - name: Build dist
+      run: npm run build
+    - name: Run tests
+      env:
+        CI: true
+        POSTGRES_DB: ${{ secrets.ACTIONS_POSTGRES_DB }}
+        POSTGRES_USER: ${{ secrets.ACTIONS_POSTGRES_USER }}
+        POSTGRES_PASSWORD: ${{ secrets.ACTIONS_POSTGRES_PASSWORD }}
+        POSTGRES_HOST: ${{ secrets.ACTIONS_POSTGRES_HOST }}
+        POSTGRES_PORT: ${{ secrets.ACTIONS_POSTGRES_PORT }}
+      run: npm test
