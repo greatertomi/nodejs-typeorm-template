@@ -3,4 +3,4 @@ npm-debug.log
 dist
 data
 src/migrations
-jest.config.js
+jest.config.ts

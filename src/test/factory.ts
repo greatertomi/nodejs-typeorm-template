@@ -1,28 +1,16 @@
 import express from 'express';
 import supertest from 'supertest';
-import { DataSource, DataSourceOptions } from 'typeorm';
+import { DataSource } from 'typeorm';
 
 import { Server, createServer } from 'node:http';
 import { createDatabase } from 'typeorm-extension';
 
-import { UserEntity } from '../entities/UserEntity';
+import dataSource, { testDatabaseConfig } from '../data-source';
 import routes from '../routes';
-
-export const dataSourceOptions: DataSourceOptions = {
-  type: 'postgres',
-  host: '127.0.0.1',
-  port: 5432,
-  username: 'root',
-  database: 'test',
-  password: 'easypass',
-  synchronize: true,
-  dropSchema: true,
-  entities: [UserEntity]
-};
 
 export class TestFactory {
   private _app: express.Application;
-  public _connection: DataSource;
+  private _connection: DataSource;
   private _server: Server;
 
   public get app(): supertest.SuperTest<supertest.Test> {
@@ -40,11 +28,11 @@ export class TestFactory {
 
   private async startup(): Promise<void> {
     try {
-      this._connection = new DataSource(dataSourceOptions);
+      this._connection = dataSource.TestDataSource;
       await createDatabase({
         options: {
           type: 'postgres' as const,
-          ...dataSourceOptions
+          ...testDatabaseConfig
         }
       });
       await this._connection.initialize();

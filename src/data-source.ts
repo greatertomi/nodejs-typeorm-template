@@ -21,6 +21,19 @@ const databaseConfig: DataSourceOptions = {
   subscribers: []
 };
 
-const dataSource = new DataSource(databaseConfig);
+export const testDatabaseConfig: DataSourceOptions = {
+  type: 'postgres',
+  host: 'localhost',
+  port: 2345,
+  username: 'root',
+  database: 'test',
+  password: 'easypass',
+  synchronize: true,
+  dropSchema: true,
+  entities: syncDatabase ? ['src/entities/**/*.ts'] : ['dist/entities/**/*.js']
+};
 
-export default dataSource;
+const AppDataSource = new DataSource(databaseConfig);
+const TestDataSource = new DataSource(testDatabaseConfig);
+
+export default { AppDataSource, TestDataSource };

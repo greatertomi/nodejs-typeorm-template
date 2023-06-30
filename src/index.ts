@@ -11,7 +11,7 @@ const { PORT } = envConfig;
 
 export const main = async () => {
   try {
-    await dataSource.initialize();
+    await dataSource.AppDataSource.initialize();
     const app = express();
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));

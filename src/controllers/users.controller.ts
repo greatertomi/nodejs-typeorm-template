@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
 
-import dataSource from '../data-source';
 import { UserEntity } from '../entities/UserEntity';
+import handleGetRepository from '../utils/handleGetRepository';
 
 export const getUsers = async (req: Request, res: Response) => {
   try {
-    const userRepository = dataSource.manager.getRepository(UserEntity);
+    const userRepository = handleGetRepository(UserEntity);
     const users = await userRepository.find();
     return res.status(200).send(users);
   } catch (error) {
@@ -16,7 +16,7 @@ export const getUsers = async (req: Request, res: Response) => {
 export const createUser = async (req: Request, res: Response) => {
   const { firstName, lastName, age, email, password, role, country } = req.body;
   try {
-    const userRepository = dataSource.manager.getRepository(UserEntity);
+    const userRepository = handleGetRepository(UserEntity);
     const user = userRepository.create({
       firstName,
       lastName,

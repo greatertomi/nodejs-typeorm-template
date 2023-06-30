@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   globalSetup: './src/test/jest-setup/jest-setup.ts',
   globalTeardown: './src/test/jest-setup/jest-teardown.ts',
   coveragePathIgnorePatterns: ['.config.js'],
