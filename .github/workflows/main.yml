@@ -36,4 +36,9 @@ jobs:
     - name: Run tests
       env:
         CI: true
+        POSTGRES_DB: ${{ secrets.ACTIONS_POSTGRES_DB }}
+        POSTGRES_USER: ${{ secrets.ACTIONS_POSTGRES_USER }}
+        POSTGRES_PASSWORD: ${{ secrets.ACTIONS_POSTGRES_PASSWORD }}
+        POSTGRES_HOST: ${{ secrets.ACTIONS_POSTGRES_HOST }}
+        POSTGRES_PORT: ${{ secrets.ACTIONS_POSTGRES_PORT }}
       run: npm test
